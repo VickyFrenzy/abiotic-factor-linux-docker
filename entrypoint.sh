@@ -3,12 +3,12 @@ set -euo pipefail
 
 # Configure server arguments
 SetUsePerfThreads="-useperfthreads "
-if [[ "${UsePerfThreads:-true}" == "false" ]]; then
+if [[ $UsePerfThreads == "false" ]]; then
     SetUsePerfThreads=""
 fi
 
 SetNoAsyncLoadingThread="-NoAsyncLoadingThread "
-if [[ "${NoAsyncLoadingThread:-true}" == "false" ]]; then
+if [[ $NoAsyncLoadingThread == "false" ]]; then
     SetNoAsyncLoadingThread=""
 fi
 
@@ -25,7 +25,7 @@ AdditionalArgs="${AdditionalArgs:-}"
 DISCORD_WEBHOOK_URL="${DISCORD_WEBHOOK_URL:-}"
 
 # Check for updates/perform initial installation
-if [ ! -d "/server/AbioticFactor/Binaries/Win64" ] || [[ "${AutoUpdate:-false}" == "true" ]]; then
+if [ ! -d "/server/AbioticFactor/Binaries/Win64" ] || [[ $AutoUpdate == "true" ]]; then
     steamcmd \
       +@sSteamCmdForcePlatformType windows \
       +force_install_dir /server \
