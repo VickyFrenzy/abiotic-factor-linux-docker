@@ -10,6 +10,8 @@ RUN dpkg --add-architecture i386 && \
     rm -rf /var/lib/apt/lists/*
 
 ENV PATH="$PATH:/usr/games"
+ENV UsePerfThreads=true
+ENV NoAsyncLoadingThread=true
 
 WORKDIR /steamcmd
 
