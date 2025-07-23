@@ -34,18 +34,16 @@ if [ ! -d "/server/AbioticFactor/Binaries/Win64" ] || [[ $AutoUpdate == "true" ]
       +quit
 fi
 
-pushd /server/AbioticFactor/Binaries/Win64 > /dev/null
-
 echo "Starting game server..."
 if [ -z "$DISCORD_WEBHOOK_URL" ]; then
     echo "Discord webhook URL not provided; server will run without webhook notifications."
-    wine AbioticFactorServer-Win64-Shipping.exe ${SetUsePerfThreads}${SetNoAsyncLoadingThread}-MaxServerPlayers=${MaxServerPlayers} \
+    exec wine /server/AbioticFactor/Binaries/Win64/AbioticFactorServer-Win64-Shipping.exe ${SetUsePerfThreads}${SetNoAsyncLoadingThread}-MaxServerPlayers=${MaxServerPlayers} \
       -PORT=${Port} -QueryPort=${QueryPort} -ServerPassword=${ServerPassword} \
       -SteamServerName="${SteamServerName}" -WorldSaveName="${WorldSaveName}" -tcp ${AdditionalArgs}
 else
     echo "Discord webhook enabled; monitoring logs for join code..."
     # Run the game server, piping output to tee which both prints the log and sends it to the notifier.
-    wine AbioticFactorServer-Win64-Shipping.exe ${SetUsePerfThreads}${SetNoAsyncLoadingThread}-MaxServerPlayers=${MaxServerPlayers} \
+    exec wine /server/AbioticFactor/Binaries/Win64/AbioticFactorServer-Win64-Shipping.exe ${SetUsePerfThreads}${SetNoAsyncLoadingThread}-MaxServerPlayers=${MaxServerPlayers} \
       -PORT=${Port} -QueryPort=${QueryPort} -ServerPassword=${ServerPassword} \
       -SteamServerName="${SteamServerName}" -WorldSaveName="${WorldSaveName}" -tcp ${AdditionalArgs} \
       | tee >(while IFS= read -r line; do
@@ -61,5 +59,3 @@ else
             fi
         done)
 fi
-
-popd > /dev/null
